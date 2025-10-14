@@ -1,7 +1,8 @@
 #database of popular videogames that were released from the years 1990-2020
 from typing import List, Tuple
+
 games_db: List[Tuple[str, str, int, List[str]]] = [
-(
+    (
     "super mario world",   # the videogame title
     "nintendo",            # the publisher
     1990,                  # the release year
@@ -12,7 +13,19 @@ games_db: List[Tuple[str, str, int, List[str]]] = [
         "shigefumi hino",
         "koji kondo",
     ],
-)
+), 
+(
+    "mega man 3",   # the videogame title
+    "capcom",            # the publisher
+    1990,                  # the release year
+    [                      # the list of developers
+        "masayoshi kurokawa",
+        "tokuro fujiwara",
+        "masayoshi kurosawa",
+        "yoshinori takenaka",
+        "tadashi kuwana",
+    ],
+), 
 (
     "mortal kombat ii",   # the videogame title
     "midway games",       # the publisher
@@ -140,13 +153,13 @@ games_db: List[Tuple[str, str, int, List[str]]] = [
 ),
 
 (
-    "the last of us part ii"
-    "sony interactive entertainment",
+    "cyberpunk 2077"
+    "cd projekt red",
     2020,
     [
-        "",
-        "",
-        "",
+        "adam badowski",
+        "konrad tomaszkiewicz",
+        "gabriel amatangelo",
     ]
  )
 ]
