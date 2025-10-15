@@ -18,8 +18,6 @@ def get_year(game: Tuple[str, str, int, List[str]]) -> int:
 def get_developers(game: Tuple[str, str, int, List[str]]) -> List[str]:
     return game[3]
 
-
-
 def title_by_year(matches: List[str]) -> List[str]:
     """Finds all videogames made in the passed in year
 
@@ -58,8 +56,6 @@ def title_by_year_range(matches: List[str]) -> List[str]:
             result.append(get_title(game))
     return result
 
-
-
 def title_before_year(matches: List[str]) -> List[str]:
     """Finds all videogames made before the passed in year
 
@@ -97,26 +93,121 @@ def title_after_year(matches: List[str]) -> List[str]:
             result.append(get_title(game))
     return result
 
+def publisher_by_title(matches: List[str]) -> List[str]:
+    """Finds publisher of videogame based on title
+
+    Args:
+        matches - a list of 1 string, just the title
+
+    Returns:
+        a list of 1 string, the publisher of the videogame
+    """
+    title = matches[0]
+    result = []
+    for game in games_db:
+        if get_title(game) == title:
+            result.append(get_publisher(game))
+    return result
 
 
+def title_by_publisher(matches: List[str]) -> List[str]:
+    """Finds videogames released by the passed in publisher
+
+    Args:
+        matches - a list of 1 string, just the publisher
+
+    Returns:
+        a list of videogame titles published by the passed in publisher
+    """
+    publisher = matches[0]
+    result = []
+    for game in games_db:
+        if get_publisher(game) == publisher:
+            result.append(get_title(game))
+    return result
+
+
+def developers_by_title(matches: List[str]) -> List[str]:
+    """Finds developers who worked in the passed in videogame title
+
+    Args:
+        matches - a list of 1 string, just the videogame title
+
+    Returns:
+        a list of developers who worked in the passed in title
+    """
+    title = matches[0]
+    result = []
+    for game in games_db:
+        if get_title(game) == title:
+            result = get_developers(movie)
+    return result
+
+
+def year_by_title(matches: List[str]) -> List[int]:
+    """Finds year of passed in videogame title
+
+    Args:
+        matches - a list of 1 string, just the videogame title
+
+    Returns:
+        a list of one item (an int), the year that the videogame was released
+    """
+    title = matches[0]
+    result = []
+    for game in games_db:
+        if get_title(game) == title:
+            result.append(get_year(game))
+    return result
+
+
+def title_by_developer(matches: List[str]) -> List[str]:
+    """Finds titles of all videogames that the given developer was in
+
+    Args:
+        matches - a list of 1 string, just the developer
+
+    Returns:
+        a list of videogame titles that the developer worked in
+    """
+    developer = matches[0]
+    result = []
+    for game in games_db:
+        if developer in get_developers(game):
+            result.append(get_title(game))
+    return result
+
+def title_by_developers(matches: List[str]) -> List[str]:
+    "Finds titles of all videogames that have that number of developers"
+    developers = matches[0]
+    num = int (matches[1])
+    result = []
+    for game in games_db:
+        if get_developers(game) == num:
+            result.append(get_title(game))
+    return result
+
+# dummy argument is ignored and doesn't matter
+def bye_action(dummy: List[str]) -> None:
+    raise KeyboardInterrupt
 
     # The pattern-action list for the natural language query system A list of tuples of
 # pattern and action It must be declared here, after all of the function definitions
 pa_list: List[Tuple[List[str], Callable[[List[str]], List[Any]]]] = [
-    (str.split("what movies were made in _"), title_by_year),
-    (str.split("what movies were made between _ and _"), title_by_year_range),
-    (str.split("what movies were made before _"), title_before_year),
-    (str.split("what movies were made after _"), title_after_year),
-    # note there are two valid patterns here two different ways to ask for the director
+    (str.split("what games were made in _"), title_by_year),
+    (str.split("what games were made between _ and _"), title_by_year_range),
+    (str.split("what games were made before _"), title_before_year),
+    (str.split("what games were made after _"), title_after_year),
+    # note there are two valid patterns here two different ways to ask for the publisher
     # of a movie
-    (str.split("who directed %"), director_by_title),
-    (str.split("who was the director of %"), director_by_title),
-    (str.split("what movies were directed by %"), title_by_director),
-    (str.split("who acted in %"), actors_by_title),
+    (str.split("who published %"), publisher_by_title),
+    (str.split("who was the publisher of %"), publisher_by_title),
+    (str.split("what games were published by %"), title_by_publisher),
+    (str.split("who developed in %"), developers_by_title),
     (str.split("when was % made"), year_by_title),
-    (str.split("in what movies did % appear"), title_by_actor),
+    (str.split("in what games did % appear"), title_by_developer),
     (str.split("in what year was % made"), year_by_title),
-    (str.split("what movie had % actors", title_by_actors)),
+    (str.split("what game had % developers", title_by_developers)),
     (["bye"], bye_action),
 ]
 
@@ -151,7 +242,7 @@ def query_loop() -> None:
     """The simple query loop. The try/except structure is to catch Ctrl-C or Ctrl-D
     characters and exit gracefully.
     """
-    print("Welcome to the movie database!\n")
+    print("Welcome to the videogame database!\n")
     while True:
         try:
             print()
@@ -177,25 +268,25 @@ if __name__ == "__main__":
         ["donkey kong country 3", "final fantasy vii"]
     ), "failed title_by_year_range test"
     assert isinstance(title_before_year(["2000"]), list), "title_before_year not returning a list"
-#stopped here
-pass
-    assert sorted(title_before_year(["1950"])) == sorted(
-        ["casablanca", "citizen kane", "gone with the wind", "metropolis"]
+    assert sorted(title_before_year(["1997"])) == sorted(
+        ["super mario world", "mega man 3", "mortal kombat ii", "donket kong country 2"]
     ), "failed title_before_year test"
+    #stopped here
+pass
     assert isinstance(title_after_year(["1990"]), list), "title_after_year not returning a list"
     assert sorted(title_after_year(["1990"])) == sorted(
         ["boyz n the hood", "dead again", "the crying game", "flirting", "malcolm x"]
     ), "failed title_after_year test"
-    assert isinstance(director_by_title(["jaws"]), list), "director_by_title not returning a list"
-    assert sorted(director_by_title(["jaws"])) == sorted(
+    assert isinstance(publisher_by_title(["jaws"]), list), "publisher_by_title not returning a list"
+    assert sorted(publisher_by_title(["jaws"])) == sorted(
         ["steven spielberg"]
     ), "failed director_by_title test"
-    assert isinstance(title_by_director(["steven spielberg"]), list), "title_by_director not returning a list"
-    assert sorted(title_by_director(["steven spielberg"])) == sorted(
+    assert isinstance(title_by_publisher(["steven spielberg"]), list), "title_by_publisher not returning a list"
+    assert sorted(title_by_publisher(["steven spielberg"])) == sorted(
         ["jaws"]
     ), "failed title_by_director test"
-    assert isinstance(actors_by_title(["jaws"]), list), "actors_by_title not returning a list"
-    assert sorted(actors_by_title(["jaws"])) == sorted(
+    assert isinstance(developers_by_title(["jaws"]), list), "developers_by_title not returning a list"
+    assert sorted(developers_by_title(["jaws"])) == sorted(
         [
             "roy scheider",
             "robert shaw",
@@ -203,26 +294,26 @@ pass
             "lorraine gary",
             "murray hamilton",
         ]
-    ), "failed actors_by_title test"
-    assert sorted(actors_by_title(["movie not in database"])) == [], "failed actors_by_title not in database test"
+    ), "failed developers_by_title test"
+    assert sorted(developers_by_title(["game not in database"])) == [], "failed developers_by_title not in database test"
     assert isinstance(year_by_title(["jaws"]), list), "year_by_title not returning a list"
     assert sorted(year_by_title(["jaws"])) == sorted(
         [1975]
     ), "failed year_by_title test"
-    assert isinstance(title_by_actor(["orson welles"]), list), "title_by_actor not returning a list"
-    assert sorted(title_by_actor(["orson welles"])) == sorted(
+    assert isinstance(title_by_developer(["orson welles"]), list), "title_by_developer not returning a list"
+    assert sorted(title_by_developer(["orson welles"])) == sorted(
         ["citizen kane", "othello"]
-    ), "failed title_by_actor test"
+    ), "failed title_by_developer test"
     
     
     assert sorted(search_pa_list(["hi", "there"])) == sorted(
         ["I don't understand"]
     ), "failed search_pa_list test 1"
-    assert sorted(search_pa_list(["who", "directed", "jaws"])) == sorted(
+    assert sorted(search_pa_list(["who", "published", "jaws"])) == sorted(
         ["steven spielberg"]
     ), "failed search_pa_list test 2"
     assert sorted(
-        search_pa_list(["what", "movies", "were", "made", "in", "2020"])
+        search_pa_list(["what", "games", "were", "made", "in", "2021"])
     ) == sorted(["No answers"]), "failed search_pa_list test 3"
 
     print("All tests passed!")
