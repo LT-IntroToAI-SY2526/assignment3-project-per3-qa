@@ -1,5 +1,5 @@
-# Include the videogame database, named game_db
-from videogames import games_db
+# Include the games database, named game_db
+from games import games_db
 from match import match
 from typing import List, Tuple, Callable, Any 
 # The projection functions, that give us access to certain parts of a "game" (a tuple)
@@ -31,7 +31,7 @@ def title_by_year(matches: List[str]) -> List[str]:
     # ["1990"]
     year = int(matches[0])
     result = []
-    for game in game_db:
+    for game in games_db:
         if get_year(game) == year:
             result.append(get_title(game))
             return result
@@ -51,7 +51,7 @@ def title_by_year_range(matches: List[str]) -> List[str]:
     start_year = int(matches[0])
     end_year = int(matches[1])
     result = []
-    for game in game_db:
+    for game in games_db:
         if start_year <= game_year <= end_year:
             result.append(get_title(game))
     return result
@@ -207,7 +207,7 @@ pa_list: List[Tuple[List[str], Callable[[List[str]], List[Any]]]] = [
     (str.split("when was % made"), year_by_title),
     (str.split("in what games did % appear"), title_by_developer),
     (str.split("in what year was % made"), year_by_title),
-    (str.split("what game had % developers", title_by_developers)),
+    (str.split("what game had % developers"), title_by_developers),
     (["bye"], bye_action),
 ]
 
@@ -265,51 +265,47 @@ if __name__ == "__main__":
     ), "failed title_by_year test"
     assert isinstance(title_by_year_range(["1995", "1997"]), list), "title_by_year_range not returning a list"
     assert sorted(title_by_year_range(["1995", "1997"])) == sorted(
-        ["donkey kong country 3", "final fantasy vii"]
+        ["star wars: dark forces", "final fantasy vii"]
     ), "failed title_by_year_range test"
     assert isinstance(title_before_year(["2000"]), list), "title_before_year not returning a list"
     assert sorted(title_before_year(["1997"])) == sorted(
-        ["super mario world", "mega man 3", "mortal kombat ii", "donket kong country 2"]
+        ["super mario world", "mega man 3", "mortal kombat ii", "star wars: dark forces"]
     ), "failed title_before_year test"
-    #stopped here
-pass
     assert isinstance(title_after_year(["1990"]), list), "title_after_year not returning a list"
     assert sorted(title_after_year(["1990"])) == sorted(
-        ["boyz n the hood", "dead again", "the crying game", "flirting", "malcolm x"]
+        ["super mario world", "mega man 3"]
     ), "failed title_after_year test"
-    assert isinstance(publisher_by_title(["jaws"]), list), "publisher_by_title not returning a list"
-    assert sorted(publisher_by_title(["jaws"])) == sorted(
-        ["steven spielberg"]
+    assert isinstance(director_by_title(["super mario world"]), list), "director_by_title not returning a list"
+    assert sorted(director_by_title(["super mario world"])) == sorted(
+        ["nintendo"]
     ), "failed director_by_title test"
-    assert isinstance(title_by_publisher(["steven spielberg"]), list), "title_by_publisher not returning a list"
-    assert sorted(title_by_publisher(["steven spielberg"])) == sorted(
-        ["jaws"]
+    assert isinstance(title_by_director(["nintendo"]), list), "title_by_director not returning a list"
+    assert sorted(title_by_director(["nintendo"])) == sorted(
+        ["super mario world"]
     ), "failed title_by_director test"
-    assert isinstance(developers_by_title(["jaws"]), list), "developers_by_title not returning a list"
-    assert sorted(developers_by_title(["jaws"])) == sorted(
+    assert isinstance(developers_by_title(["super mario world"]), list), "developers_by_title not returning a list"
+    assert sorted(developers_by_title(["super mario world"])) == sorted(
         [
-            "roy scheider",
-            "robert shaw",
-            "richard dreyfuss",
-            "lorraine gary",
-            "murray hamilton",
+            "shigeru miyamoto", 
+            "katsuya eguchi hideki konno",
+            "toshihiko nakago",
+            "shigefumi hino",
+            "koji kondo",
         ]
     ), "failed developers_by_title test"
     assert sorted(developers_by_title(["game not in database"])) == [], "failed developers_by_title not in database test"
     assert isinstance(year_by_title(["jaws"]), list), "year_by_title not returning a list"
-    assert sorted(year_by_title(["jaws"])) == sorted(
-        [1975]
+    assert sorted(year_by_title(["super mario world"])) == sorted(
+        [1990]
     ), "failed year_by_title test"
-    assert isinstance(title_by_developer(["orson welles"]), list), "title_by_developer not returning a list"
-    assert sorted(title_by_developer(["orson welles"])) == sorted(
-        ["citizen kane", "othello"]
+    assert isinstance(title_by_developer(["konrad tomaszkiewicz"]), list), "title_by_developer not returning a list"
+    assert sorted(title_by_developer(["konrad tomaszkiewicz"])) == sorted(
+        ["the witcher 3: wild hunt", "cyberpunk 2077"]
     ), "failed title_by_developer test"
-    
-    
     assert sorted(search_pa_list(["hi", "there"])) == sorted(
         ["I don't understand"]
     ), "failed search_pa_list test 1"
-    assert sorted(search_pa_list(["who", "published", "jaws"])) == sorted(
+    assert sorted(search_pa_list(["who", "directed", "call of duty"])) == sorted(
         ["steven spielberg"]
     ), "failed search_pa_list test 2"
     assert sorted(

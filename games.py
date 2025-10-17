@@ -37,14 +37,14 @@ games_db: List[Tuple[str, str, int, List[str]]] = [
 ),
 
 (
-    "donkey kong country 2",   # the videogame title
-    "nintendo",                # the publisher
+    "star wars: dark forces",   # the videogame title
+    "lucasarts",                # the publisher
     1995,                      # the release year
     [                          # the list of developers
-        "tim stamper",
-        "chris stamper",
-        "david wise",
-        "steve mayles",
+        "daron stinnett",
+        "ray gresko",
+        "justin chin",
+        "winston wolff",
     ],
 ),
 
@@ -153,13 +153,13 @@ games_db: List[Tuple[str, str, int, List[str]]] = [
 ),
 
 (
-    "cyberpunk 2077"
+    "cyberpunk 2077",
     "cd projekt red",
     2020,
     [
         "adam badowski",
         "konrad tomaszkiewicz",
         "gabriel amatangelo",
-    ]
- )
+    ],
+ ),
 ]
