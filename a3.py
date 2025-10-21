@@ -5,20 +5,16 @@ from typing import List, Tuple, Callable, Any
 # The projection functions, that give us access to certain parts of a "game" (a tuple)
 def get_title(game: Tuple[str, str, int, List[str]]) -> str:
     return game[0]
-
-
+    
 def get_publisher(game: Tuple[str, str, int, List[str]]) -> str:
     return game[1]
-
 
 def get_year(game: Tuple[str, str, int, List[str]]) -> int:
     return game[2]
 
-
 def get_developers(game: Tuple[str, str, int, List[str]]) -> List[str]:
     return game[3]
 
-def title_by_year(matches: List[str]) -> List[str]:
     """Finds all videogames made in the passed in year
 
     Args:
