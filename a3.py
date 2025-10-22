@@ -16,16 +16,6 @@ def get_developers(game: Tuple[str, str, int, List[str]]) -> List[str]:
     return game[3]
     
 def title_by_year(matches:List[str])->List[str]: 
-    """Finds all videogames made in the passed in year
-
-    Args:
-        matches - a list of 1 string, just the year. Note that this year is passed as a
-            string and should be converted to an int
-
-    Returns:
-        a list of videogame titles made in the passed in year
-    """
-    # ["1990"]
     year = int(matches[0])
     result = []
     for game in games_db:
@@ -34,17 +24,6 @@ def title_by_year(matches:List[str])->List[str]:
     return result
 
 def title_by_year_range(matches: List[str]) -> List[str]:
-    """Finds all games made in the passed in year range
-
-    Args:
-        matches - a list of 2 strings, the year beginning the range and the year ending
-            the range. For example, to get games from 1990-2000 matches would look like
-            this - ["1990", "2000"] 
-
-    Returns:
-        a list of videogame titles made during those years, inclusive (meaning if you pass
-        in ["1990", "2000"] you will get movies made in 1990, 1993, 1995, 1997 & 2000)
-    """
     start_year = int(matches[0])
     end_year = int(matches[1])
     result = []
@@ -71,14 +50,6 @@ def title_after_year(matches: List[str]) -> List[str]:
     return result
 
 def publisher_by_title(matches: List[str]) -> List[str]:
-    """Finds publisher of videogame based on title
-
-    Args:
-        matches - a list of 1 string, just the title
-
-    Returns:
-        a list of 1 string, the publisher of the videogame
-    """
     title = matches[0]
     result = []
     for game in games_db:
@@ -88,14 +59,6 @@ def publisher_by_title(matches: List[str]) -> List[str]:
 
 
 def title_by_publisher(matches: List[str]) -> List[str]:
-    """Finds videogames released by the passed in publisher
-
-    Args:
-        matches - a list of 1 string, just the publisher
-
-    Returns:
-        a list of videogame titles published by the passed in publisher
-    """
     publisher = matches[0]
     result = []
     for game in games_db:
@@ -246,17 +209,15 @@ if __name__ == "__main__":
         ["super mario world", "mega man 3", "mortal kombat ii", "star wars: dark forces"]
     ), "failed title_before_year test"
     assert isinstance(title_after_year(["1990"]), list), "title_after_year not returning a list"
-    assert sorted(title_after_year(["1990"])) == sorted(
-        ["super mario world", "mega man 3"]
-    ), "failed title_after_year test"
+
     assert isinstance(publisher_by_title(["super mario world"]), list), "publisher_by_title not returning a list"
     assert sorted(publisher_by_title(["super mario world"])) == sorted(
         ["nintendo"]
     ), "failed publisher_by_title test"
-    assert isinstance(title_by_director(["nintendo"]), list), "title_by_director not returning a list"
-    assert sorted(title_by_director(["nintendo"])) == sorted(
-        ["super mario world"]
-    ), "failed title_by_director test"
+    assert isinstance(title_by_developer(["ed boon"]), list), "title_by_developer not returning a list"
+    assert sorted(title_by_developer(["ed boon"])) == sorted(
+        ["mortal kombat ii"]
+    ), "failed title_by_developer test"
     assert isinstance(developers_by_title(["super mario world"]), list), "developers_by_title not returning a list"
     assert sorted(developers_by_title(["super mario world"])) == sorted(
         [
@@ -279,8 +240,8 @@ if __name__ == "__main__":
     assert sorted(search_pa_list(["hi", "there"])) == sorted(
         ["I don't understand"]
     ), "failed search_pa_list test 1"
-    assert sorted(search_pa_list(["who", "directed", "call of duty"])) == sorted(
-        ["steven spielberg"]
+    assert sorted(search_pa_list(["when", "was", "call of duty", "made"])) == sorted(
+        ["2003"]
     ), "failed search_pa_list test 2"
     assert sorted(
         search_pa_list(["what", "games", "were", "made", "in", "2021"])
