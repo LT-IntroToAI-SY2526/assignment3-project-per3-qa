@@ -14,7 +14,8 @@ def get_year(game: Tuple[str, str, int, List[str]]) -> int:
 
 def get_developers(game: Tuple[str, str, int, List[str]]) -> List[str]:
     return game[3]
-
+    
+def title_by_year(matches:List[str])->List[str]: 
     """Finds all videogames made in the passed in year
 
     Args:
@@ -30,7 +31,7 @@ def get_developers(game: Tuple[str, str, int, List[str]]) -> List[str]:
     for game in games_db:
         if get_year(game) == year:
             result.append(get_title(game))
-            return result
+    return result
 
 def title_by_year_range(matches: List[str]) -> List[str]:
     """Finds all games made in the passed in year range
@@ -48,21 +49,11 @@ def title_by_year_range(matches: List[str]) -> List[str]:
     end_year = int(matches[1])
     result = []
     for game in games_db:
-        if start_year <= game_year <= end_year:
+        if start_year <= get_year(game) <= end_year:
             result.append(get_title(game))
     return result
 
 def title_before_year(matches: List[str]) -> List[str]:
-    """Finds all videogames made before the passed in year
-
-    Args:
-        matches - a list of 1 string, just the year. Note that this year is passed as a
-            string and should be converted to an int
-
-    Returns:
-        a list of videogame titles made before the passed in year, exclusive (meaning if you
-        pass in 1997 you won't get any movies made that year, only before)
-    """
     year = int(matches[0])
     result = []
     for game in games_db:
@@ -72,16 +63,6 @@ def title_before_year(matches: List[str]) -> List[str]:
 
 
 def title_after_year(matches: List[str]) -> List[str]:
-    """Finds all videogames made after the passed in year
-
-    Args:
-        matches - a list of 1 string, just the year. Note that this year is passed as a
-            string and should be converted to an int
-
-    Returns:
-        a list of videogame titles made after the passed in year, exclusive (meaning if you
-        pass in 1997 you won't get any movies made that year, only after)
-    """
     year = int(matches[0])
     result = []
     for game in games_db:
@@ -136,7 +117,7 @@ def developers_by_title(matches: List[str]) -> List[str]:
     result = []
     for game in games_db:
         if get_title(game) == title:
-            result = get_developers(movie)
+            result = get_developers(game)
     return result
 
 
@@ -194,9 +175,6 @@ pa_list: List[Tuple[List[str], Callable[[List[str]], List[Any]]]] = [
     (str.split("what games were made between _ and _"), title_by_year_range),
     (str.split("what games were made before _"), title_before_year),
     (str.split("what games were made after _"), title_after_year),
-    # note there are two valid patterns here two different ways to ask for the publisher
-    # of a movie
-    (str.split("who published %"), publisher_by_title),
     (str.split("who was the publisher of %"), publisher_by_title),
     (str.split("what games were published by %"), title_by_publisher),
     (str.split("who developed in %"), developers_by_title),
@@ -271,10 +249,10 @@ if __name__ == "__main__":
     assert sorted(title_after_year(["1990"])) == sorted(
         ["super mario world", "mega man 3"]
     ), "failed title_after_year test"
-    assert isinstance(director_by_title(["super mario world"]), list), "director_by_title not returning a list"
-    assert sorted(director_by_title(["super mario world"])) == sorted(
+    assert isinstance(publisher_by_title(["super mario world"]), list), "publisher_by_title not returning a list"
+    assert sorted(publisher_by_title(["super mario world"])) == sorted(
         ["nintendo"]
-    ), "failed director_by_title test"
+    ), "failed publisher_by_title test"
     assert isinstance(title_by_director(["nintendo"]), list), "title_by_director not returning a list"
     assert sorted(title_by_director(["nintendo"])) == sorted(
         ["super mario world"]
@@ -309,3 +287,5 @@ if __name__ == "__main__":
     ) == sorted(["No answers"]), "failed search_pa_list test 3"
 
     print("All tests passed!")
+
+query_loop()
